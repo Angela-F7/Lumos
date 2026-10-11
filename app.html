@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumos Workspace | Core Remediation Dashboard</title>
+  
+  <!-- SEO & Meta -->
+  <meta name="description" content="Lumos functional core workspace: AST code editor, live DOM URL scanner, side-by-side remediation diff, and speech audio synthesizer." />
+  <meta name="theme-color" content="#090d16" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Unified Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient Canvas Background & Glow Orbs -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="ambient-glow-orb orb-primary" aria-hidden="true"></div>
+  <div class="ambient-glow-orb orb-secondary" aria-hidden="true"></div>
+
+  <!-- Shared Top Navigation Header (Glassmorphic) -->
+  <header class="lumos-navbar" role="banner">
+    <div class="nav-container">
+      <a href="index.html" class="brand-group" aria-label="Lumos Home">
+        <div class="logo-wrapper">
+          <i class="fa-solid fa-universal-access logo-icon" aria-hidden="true"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Lumos</span>
+          <span class="brand-tagline">Accessibility Remediation Studio</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i> Vision
+        </a>
+        <a href="app.html" class="nav-link active" aria-current="page">
+          <i class="fa-solid fa-code" aria-hidden="true"></i> Workspace
+        </a>
+        <a href="analytics.html" class="nav-link">
+          <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Analytics
+        </a>
+        <a href="docs.html" class="nav-link">
+          <i class="fa-solid fa-book-open" aria-hidden="true"></i> Docs &amp; Story
+        </a>
+      </nav>
+
+      <!-- Workspace Specific Controls -->
+      <div class="nav-controls">
+        <!-- View Mode Switcher -->
+        <div class="mode-toggle-group" role="tablist" aria-label="Application View Mode">
+          <button id="mode-playground" class="mode-btn active" role="tab" aria-selected="true" data-mode="playground">
+            <i class="fa-solid fa-code"></i> Dev Studio
+          </button>
+          <button id="mode-overlay" class="mode-btn" role="tab" aria-selected="false" data-mode="overlay">
+            <i class="fa-solid fa-window-restore"></i> Overlay Mode
+          </button>
+        </div>
+
+        <!-- Scenario Preset Selector -->
+        <div class="preset-selector-wrapper">
+          <label for="preset-select" class="sr-only">Choose Accessibility Scenario Preset</label>
+          <i class="fa-solid fa-sliders preset-icon" aria-hidden="true"></i>
+          <select id="preset-select" aria-label="Select Accessibility Test Preset">
+            <option value="checkout">Scenario 1: Checkout Form (Missing Labels &amp; Focus)</option>
+            <option value="chart">Scenario 2: Dynamic Sales Chart (Missing Audio/Alt)</option>
+            <option value="modal">Scenario 3: Modal Dialog (Missing ARIA &amp; Trap)</option>
+            <option value="custom">Scenario 4: Custom Sandbox Code</option>
+          </select>
+        </div>
+
+        <!-- Light / Dark Mode Switching Toggle -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Switch between light and dark mode" title="Switch between Light and Dark mode">
+          <span class="theme-toggle-track">
+            <i class="fa-solid fa-moon dark-icon" aria-hidden="true"></i>
+            <i class="fa-solid fa-sun light-icon" aria-hidden="true"></i>
+          </span>
+          <span class="theme-toggle-thumb"></span>
+        </button>
+
+        <!-- Master Auto-Fix Action Button -->
+        <button id="btn-cast-spell" class="btn-primary-action" title="Run automated WCAG remediation across DOM tree">
+          <i class="fa-solid fa-bolt-lightning"></i>
+          <span class="btn-text">Run Auto-Fix</span>
+          <span class="hotkey-pill">Ctrl+Shift+L</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Elastic Reel Alert Ticker Component (@reactbits-starter/elastic-reel-tw) -->
+  <section class="elastic-reel-container" aria-label="Real-time Accessibility Remediation Alerts">
+    <div class="elastic-reel-badge">
+      <i class="fa-solid fa-bell"></i> Live Alerts
+    </div>
+    <div class="elastic-reel-track">
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 4.1.2</span>
+        <span>Custom &lt;div&gt; button converted to semantic &lt;button type="submit"&gt;</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 1.4.3</span>
+        <span>Low contrast ratio 2.1:1 auto-calibrated to 7.4:1 AAA standard</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 1.1.1</span>
+        <span>Non-text &lt;canvas&gt; sales chart transcribed via real-time speech narration</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 2.4.7</span>
+        <span>Missing focus indicator repaired with high-contrast :focus-visible ring</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 2.4.3</span>
+        <span>Trapped modal dialog bounded with role="dialog" &amp; aria-modal="true"</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 4.1.2</span>
+        <span>Custom &lt;div&gt; button converted to semantic &lt;button type="submit"&gt;</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="app-container" class="playground-layout" role="main">
+    
+    <!-- VIEW 1: DEV PLAYGROUND (DEFAULT DYNAMIC DASHBOARD) -->
+    <div id="view-playground" class="view-panel active">
+      
+      <!-- Top Metrics & Score Banner Bar -->
+      <section class="score-banner-card card-surface" aria-label="Accessibility Metrics Overview">
+        <div class="score-gauge-box">
+          <div class="radial-score-ring" id="score-ring">
+            <svg viewBox="0 0 100 100" class="radial-svg" aria-hidden="true">
+              <circle class="radial-bg" cx="50" cy="50" r="42"></circle>
+              <circle class="radial-meter" id="radial-progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="153"></circle>
+            </svg>
+            <div class="score-center">
+              <span class="score-number" id="score-val">42%</span>
+              <span class="score-status status-poor" id="score-label">Inaccessible</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-details-grid">
+          <div class="metric-chip">
+            <div class="metric-icon icon-perceivable"><i class="fa-solid fa-eye"></i></div>
+            <div class="metric-info">
+              <span class="metric-title">Perceivable</span>
+              <div class="metric-bar-wrap"><div class="metric-bar-fill" id="bar-perceivable" style="width: 35%;"></div></div>
+              <span class="metric-val" id="val-perceivable">35 / 100</span>
+            </div>
+          </div>
+
+          <div class="metric-chip">
+            <div class="metric-icon icon-operable"><i class="fa-solid fa-keyboard"></i></div>
+            <div class="metric-info">
+              <span class="metric-title">Operable</span>
+              <div class="metric-bar-wrap"><div class="metric-bar-fill" id="bar-operable" style="width: 40%;"></div></div>
+              <span class="metric-val" id="val-operable">40 / 100</span>
+            </div>
+          </div>
+
+          <div class="metric-chip">
+            <div class="metric-icon icon-understandable"><i class="fa-solid fa-brain"></i></div>
+            <div class="metric-info">
+              <span class="metric-title">Understandable</span>
+              <div class="metric-bar-wrap"><div class="metric-bar-fill" id="bar-understandable" style="width: 50%;"></div></div>
+              <span class="metric-val" id="val-understandable">50 / 100</span>
+            </div>
+          </div>
+
+          <div class="metric-chip">
+            <div class="metric-icon icon-robust"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="metric-info">
+              <span class="metric-title">Robust (WCAG 2.2)</span>
+              <div class="metric-bar-wrap"><div class="metric-bar-fill" id="bar-robust" style="width: 45%;"></div></div>
+              <span class="metric-val" id="val-robust">45 / 100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Summary Stats & Export Action -->
+        <div class="quick-stats-summary">
+          <div class="stat-pill stat-critical">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="stat-violations-count">5 WCAG Barriers</span>
+          </div>
+          <div class="stat-pill stat-success">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="stat-fixed-count">0 Fixed</span>
+          </div>
+          <button id="btn-export-report" class="btn-secondary" title="Export WCAG Audit Report">
+            <i class="fa-solid fa-file-export"></i> Report
+          </button>
+        </div>
+      </section>
+
+      <!-- 3-Column Workspace Layout -->
+      <div class="workspace-grid">
+        
+        <!-- SECTION A: SOURCE COMPONENT EDITOR -->
+        <section class="workspace-card card-surface spellbook-card" aria-label="Component Source Editor">
+          <div class="card-header">
+            <div class="header-title">
+              <i class="fa-solid fa-code-branch text-accent"></i>
+              <h2>Component Source</h2>
+              <span class="subtitle">Input Target</span>
+            </div>
+
+            <div class="tab-toggle-group" role="tablist">
+              <button id="tab-code-editor" class="tab-btn active" role="tab" aria-selected="true">
+                <i class="fa-solid fa-code"></i> Code Editor
+              </button>
+              <button id="tab-url-scanner" class="tab-btn" role="tab" aria-selected="false">
+                <i class="fa-solid fa-globe"></i> URL Scanner
+              </button>
+            </div>
+          </div>
+
+          <!-- Tab Content 1: Code Editor -->
+          <div id="content-code-editor" class="editor-tab-body active">
+            <div class="editor-toolbar">
+              <span class="file-tag"><i class="fa-brands fa-html5 text-orange"></i> target-component.jsx</span>
+              <div class="toolbar-actions">
+                <span id="editor-lines-badge" class="badge-subtle">24 Lines</span>
+                <button id="btn-reset-code" class="btn-icon" title="Reset Code to Original">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <button id="btn-copy-input-code" class="btn-icon" title="Copy Raw Code">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Code Editor Container -->
+            <div class="code-editor-container" id="editor-input-wrapper">
+              <div class="line-numbers" id="input-line-numbers"></div>
+              <textarea id="raw-code-input" class="code-textarea" spellcheck="false" aria-label="Non-accessible HTML or JSX Code Input"></textarea>
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Live URL Scanner View -->
+          <div id="content-url-scanner" class="editor-tab-body hidden">
+            <div class="url-bar-wrapper">
+              <i class="fa-solid fa-lock url-lock-icon"></i>
+              <input type="url" id="target-url-input" class="url-input" value="https://store.lumos-demo.dev/checkout" placeholder="Enter target site URL..." aria-label="Target Web Site URL" />
+              <button id="btn-run-url-scan" class="btn-scan-action">
+                <i class="fa-solid fa-magnifying-glass font-sparkle"></i> Scan DOM
+              </button>
+            </div>
+
+            <!-- Simulated Site Preview Box -->
+            <div class="url-preview-viewport">
+              <div class="viewport-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="viewport-title">Live DOM Inspector Canvas</span>
+              </div>
+              <div id="simulated-dom-frame" class="simulated-page-content">
+                <!-- Dynamic DOM Preview rendered here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION B: REMEDIATION & DIFF INSPECTOR -->
+        <section class="workspace-card card-surface remediation-card" aria-label="Remediation Diff and Code Inspector">
+          <div class="card-header">
+            <div class="header-title">
+              <i class="fa-solid fa-arrows-split-up-and-left text-accent"></i>
+              <h2>Remediation Diff</h2>
+              <span class="subtitle">Side-by-Side</span>
+            </div>
+
+            <div class="diff-view-mode-toggle" role="radiogroup" aria-label="Diff Display Style">
+              <button id="diff-split-btn" class="mini-btn active" title="Split Screen Diff">Split</button>
+              <button id="diff-unified-btn" class="mini-btn" title="Unified Diff View">Unified</button>
+            </div>
+          </div>
+
+          <!-- Diff Viewer Box -->
+          <div class="diff-viewer-wrapper" id="diff-container">
+            <div class="diff-pane diff-before">
+              <div class="pane-header header-bad">
+                <span><i class="fa-solid fa-triangle-exclamation"></i> Original: WCAG Barriers</span>
+              </div>
+              <div class="code-editor-container pane-code" id="diff-before-view"></div>
+            </div>
+
+            <div class="diff-pane diff-after">
+              <div class="pane-header header-good">
+                <span><i class="fa-solid fa-check-double"></i> Remediated: WCAG 2.2 Compliant</span>
+                <button id="btn-copy-fixed-code" class="btn-mini-copy" title="Copy Remediated Code">
+                  <i class="fa-regular fa-copy"></i> Copy
+                </button>
+              </div>
+              <div class="code-editor-container pane-code" id="diff-after-view"></div>
+            </div>
+          </div>
+
+          <!-- Audio Description Synthesizer Card -->
+          <div class="audio-synthesizer-card" id="audio-synth-card">
+            <div class="synth-header">
+              <div class="synth-title">
+                <i class="fa-solid fa-volume-high text-accent"></i>
+                <span>Audio Description Synthesizer</span>
+                <span class="badge-tag">Accessibility Speech</span>
+              </div>
+              <div class="synth-controls">
+                <button id="btn-play-audio-synth" class="btn-synth-play" aria-label="Play Synthesized Audio Description">
+                  <i class="fa-solid fa-play" id="synth-play-icon"></i>
+                  <span id="synth-play-text">Play Audio</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Waveform Canvas & Transcript -->
+            <div class="synth-body">
+              <canvas id="waveform-canvas" width="480" height="40" aria-label="Audio Waveform Visualization"></canvas>
+              <div class="synth-transcript-box">
+                <p id="audio-transcript-text" class="transcript-text">
+                  <i class="fa-solid fa-quote-left text-muted"></i> 
+                  Quarterly sales bar graph showing Q1 Revenue at $142,000, Q2 at $198,000, Q3 at $254,000, and Q4 peaking at $310,000 with a 32% year-over-year growth trajectory.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION C: ADVISOR & AUDIT LOG -->
+        <section class="workspace-card card-surface roost-audit-card" aria-label="Accessibility Advisor and Audit Log">
+          
+          <!-- OWLS ADVISOR WIDGET -->
+          <div class="owo-roost-widget" id="owo-roost-box">
+            <div class="owo-speech-bubble" id="owo-bubble">
+              <div class="bubble-header">
+                <span class="owl-name">Owo the Accessibility Guide</span>
+                <span class="bubble-time">Live Status</span>
+              </div>
+              <p id="owo-speech-text" class="speech-content">
+                Welcome to Lumos. Detected 4 accessibility barriers in this DOM tree. Click "Run Auto-Fix" to generate WCAG 2.2 compliant refactoring.
+              </p>
+            </div>
+
+            <div class="owo-avatar-container" id="owo-avatar-interactive" title="Click Owo for accessibility guidance">
+              <!-- Custom Animated SVG Owl Mascot -->
+              <svg class="owo-svg-mascot" viewBox="0 0 160 180" width="120" height="135" id="owo-svg" role="img" aria-label="Owo the Owl Accessibility Mascot">
+                <defs>
+                  <radialGradient id="wand-glow-grad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#D97706" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+
+                <circle class="wand-aura-svg" cx="135" cy="55" r="20" fill="url(#wand-glow-grad)" />
+
+                <!-- Owl Body -->
+                <ellipse cx="80" cy="115" rx="45" ry="50" class="owl-body-svg" fill="#1E293B" stroke="#334155" stroke-width="2.5"/>
+                <ellipse cx="80" cy="122" rx="30" ry="34" fill="#0F172A" class="owl-belly-svg"/>
+                <path d="M 65 110 Q 72 115 80 110 Q 88 115 95 110 M 65 125 Q 72 130 80 125 Q 88 130 95 125" stroke="#F59E0B" stroke-width="2" fill="none" opacity="0.8"/>
+
+                <!-- Wings -->
+                <path class="owl-wing left-wing" d="M 36 95 C 20 110 15 135 30 145 C 38 130 42 115 40 98 Z" fill="#334155" stroke="#475569"/>
+                <path class="owl-wing right-wing" d="M 124 95 C 140 110 145 135 130 145 C 122 130 118 115 120 98 Z" fill="#334155" stroke="#475569"/>
+
+                <!-- Head -->
+                <circle cx="80" cy="70" r="38" fill="#1E293B" stroke="#334155" stroke-width="2.5" class="owl-head-svg"/>
+                <polygon points="50,42 42,20 62,34" fill="#334155" stroke="#475569"/>
+                <polygon points="110,42 118,20 98,34" fill="#334155" stroke="#475569"/>
+
+                <!-- Inspector Cap -->
+                <path d="M 45 42 L 80 10 L 115 42 Z" fill="#0F172A" stroke="#F59E0B" stroke-width="2"/>
+                <ellipse cx="80" cy="42" rx="38" ry="7" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+                <polygon points="80,18 84,26 93,26 86,31 89,39 80,34 71,39 74,31 67,26 76,26" fill="#F59E0B"/>
+
+                <!-- Spectacles -->
+                <circle cx="63" cy="72" r="14" fill="none" stroke="#38BDF8" stroke-width="2.5"/>
+                <circle cx="97" cy="72" r="14" fill="none" stroke="#38BDF8" stroke-width="2.5"/>
+                <line x1="77" y1="72" x2="83" y2="72" stroke="#38BDF8" stroke-width="2.5"/>
+
+                <!-- Eyes -->
+                <g class="owl-eye-group">
+                  <circle cx="63" cy="72" r="9" fill="#FEF08A"/>
+                  <circle cx="65" cy="71" r="5" fill="#0F172A" class="pupil"/>
+                  <circle cx="67" cy="68" r="2" fill="#FFFFFF"/>
+
+                  <circle cx="97" cy="72" r="9" fill="#FEF08A"/>
+                  <circle cx="99" cy="71" r="5" fill="#0F172A" class="pupil"/>
+                  <circle cx="101" cy="68" r="2" fill="#FFFFFF"/>
+
+                  <!-- Eyelids -->
+                  <path class="eyelid eyelid-left" d="M 53 72 Q 63 60 73 72 Q 63 72 53 72 Z" fill="#1E293B" opacity="0"/>
+                  <path class="eyelid eyelid-right" d="M 87 72 Q 97 60 107 72 Q 97 72 87 72 Z" fill="#1E293B" opacity="0"/>
+                </g>
+
+                <!-- Beak -->
+                <polygon points="75,82 85,82 80,92" fill="#F59E0B"/>
+
+                <!-- Inspector Pointer -->
+                <g class="magic-wand-group" id="wand-group">
+                  <line x1="115" y1="100" x2="135" y2="55" stroke="#78350F" stroke-width="4" stroke-linecap="round"/>
+                  <polygon points="135,45 138,53 146,53 139,58 142,66 135,61 128,66 131,58 124,53 132,53" fill="#F59E0B" class="wand-star"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- AUDIT LOG SECTION -->
+          <div class="audit-log-section">
+            <div class="card-header">
+              <div class="header-title">
+                <i class="fa-solid fa-list-check text-accent"></i>
+                <h2>WCAG Audit Log</h2>
+                <span class="subtitle" id="violation-count-badge">4 Violations</span>
+              </div>
+              
+              <div class="filter-pills-row" role="group" aria-label="Filter Audit Logs">
+                <button class="filter-pill active" data-filter="all">All</button>
+                <button class="filter-pill" data-filter="A">Level A</button>
+                <button class="filter-pill" data-filter="AA">Level AA</button>
+                <button class="filter-pill" data-filter="AAA">Level AAA</button>
+              </div>
+            </div>
+
+            <!-- List of Accessible Cards -->
+            <div class="audit-cards-scroll" id="audit-cards-list">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </div>
+
+    <!-- VIEW 2: EXTENSION OVERLAY (SIMULATED BROWSER EXTENSION MODE) -->
+    <div id="view-overlay" class="view-panel hidden">
+      <div class="browser-window-mockup card-surface">
+        
+        <!-- Browser Header Bar -->
+        <div class="browser-bar">
+          <div class="browser-controls">
+            <span class="btn-dot dot-close"></span>
+            <span class="btn-dot dot-min"></span>
+            <span class="btn-dot dot-max"></span>
+          </div>
+          <div class="browser-address-bar">
+            <i class="fa-solid fa-shield-halved text-success"></i>
+            <span class="url-text">https://shopeasy-retail.dev/cart/checkout</span>
+            <i class="fa-solid fa-rotate-right btn-reload"></i>
+          </div>
+          <div class="extension-bar-actions">
+            <div class="extension-icon-badge active" title="Lumos Extension Active">
+              <i class="fa-solid fa-universal-access"></i>
+              <span class="ext-badge-dot">4</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulated Webpage with Lumos Extension Sidebar Floating -->
+        <div class="browser-body-grid">
+          
+          <!-- Web Page Preview Canvas -->
+          <div class="simulated-website-preview">
+            <div class="site-header-demo">
+              <div class="site-logo">ShopEasy Retail Checkout</div>
+            </div>
+
+            <div class="site-checkout-box">
+              <h3>Express Checkout</h3>
+              
+              <!-- Target Element 1 with Barrier Highlight -->
+              <div class="demo-field dom-target-highlighted barrier-target" id="demo-target-1">
+                <span class="ext-node-badge badge-error">WCAG 4.1.2: Missing ARIA Button</span>
+                <label>Shipping Speed</label>
+                <div class="custom-div-button" tabindex="-1">
+                  <span>Standard Shipping ($4.99)</span>
+                  <i class="fa-solid fa-truck"></i>
+                </div>
+              </div>
+
+              <!-- Target Element 2 with Low Contrast -->
+              <div class="demo-field dom-target-highlighted barrier-target" id="demo-target-2">
+                <span class="ext-node-badge badge-warning">WCAG 1.4.3: Low Contrast (2.1:1)</span>
+                <p class="low-contrast-text">By clicking submit you agree to our 240-page terms and conditions policy.</p>
+              </div>
+
+              <!-- Target Element 3: Submit Action -->
+              <div class="demo-field dom-target-highlighted barrier-target" id="demo-target-3">
+                <span class="ext-node-badge badge-error">WCAG 2.4.7: No Focus Ring</span>
+                <button class="no-focus-btn">Complete Purchase</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lumos Floating Extension Sidebar -->
+          <aside class="extension-sidebar-panel" aria-label="Lumos Browser Extension Panel">
+            <div class="ext-panel-header">
+              <div class="ext-brand">
+                <i class="fa-solid fa-universal-access text-accent"></i>
+                <span class="ext-title">Lumos Inspector</span>
+              </div>
+              <span class="ext-status-tag">DOM Active</span>
+            </div>
+
+            <div class="ext-summary-card">
+              <div class="ext-score-mini">
+                <span class="mini-score-val">42</span>
+                <span class="mini-score-lbl">Barriers</span>
+              </div>
+              <div class="ext-summary-text">
+                <strong>4 Barriers Detected</strong>
+                <p>3 DOM nodes require ARIA roles and keyboard listeners.</p>
+              </div>
+            </div>
+
+            <div class="ext-action-box">
+              <button id="btn-ext-remediate-page" class="btn-primary-action w-100">
+                <i class="fa-solid fa-bolt-lightning"></i> Inject Live DOM Fixes
+              </button>
+            </div>
+
+            <div class="ext-node-list">
+              <h4>Active DOM Nodes</h4>
+              <div class="ext-node-item active">
+                <i class="fa-solid fa-code text-accent"></i>
+                <div class="node-info">
+                  <code>div.custom-div-button</code>
+                  <span>Missing role="button", tabindex="0"</span>
+                </div>
+                <button class="btn-quick-fix-node" data-target="1">Fix</button>
+              </div>
+
+              <div class="ext-node-item">
+                <i class="fa-solid fa-font text-warning"></i>
+                <div class="node-info">
+                  <code>p.low-contrast-text</code>
+                  <span>Contrast ratio 2.1:1 &lt; 4.5:1</span>
+                </div>
+                <button class="btn-quick-fix-node" data-target="2">Fix</button>
+              </div>
+
+              <div class="ext-node-item">
+                <i class="fa-solid fa-border-top-left text-accent"></i>
+                <div class="node-info">
+                  <code>button.no-focus-btn</code>
+                  <span>Missing :focus-visible ring</span>
+                </div>
+                <button class="btn-quick-fix-node" data-target="3">Fix</button>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- EXPORT REPORT MODAL -->
+  <div id="modal-report" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card card-surface">
+      <div class="modal-header">
+        <h3 id="modal-title"><i class="fa-solid fa-file-contract text-accent"></i> Lumos WCAG 2.2 Compliance Certificate</h3>
+        <button id="btn-close-modal" class="btn-icon" aria-label="Close Report Modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="cert-box">
+          <div class="cert-stamp"><i class="fa-solid fa-shield-check"></i> Lumos Verified</div>
+          <h4>Accessibility Audit Summary</h4>
+          <p class="cert-date" id="cert-timestamp">Generated on October 11, 2026</p>
+
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>WCAG Criterion</th>
+                <th>Category</th>
+                <th>Status Before</th>
+                <th>Status After</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>4.1.2 Name, Role, Value</td>
+                <td>Operable</td>
+                <td><span class="status-fail">Fail</span></td>
+                <td><span class="status-pass">Passed (Injected ARIA)</span></td>
+              </tr>
+              <tr>
+                <td>2.1.1 Keyboard Navigation</td>
+                <td>Operable</td>
+                <td><span class="status-fail">Fail</span></td>
+                <td><span class="status-pass">Passed (onKeyDown)</span></td>
+              </tr>
+              <tr>
+                <td>1.4.3 Color Contrast</td>
+                <td>Perceivable</td>
+                <td><span class="status-fail">2.1:1</span></td>
+                <td><span class="status-pass">Passed (7.4:1 AAA)</span></td>
+              </tr>
+              <tr>
+                <td>1.1.1 Non-Text Content</td>
+                <td>Perceivable</td>
+                <td><span class="status-fail">No Alt Description</span></td>
+                <td><span class="status-pass">Passed (TTS Transcribed)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-download-json" class="btn-secondary"><i class="fa-solid fa-download"></i> Download JSON</button>
+        <button id="btn-copy-markdown-report" class="btn-primary-action"><i class="fa-solid fa-copy"></i> Copy Markdown</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-wrapper" aria-live="polite"></div>
+
+  <!-- Shared Unified Footer -->
+  <footer class="lumos-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <div class="brand-group">
+            <div class="logo-wrapper">
+              <i class="fa-solid fa-universal-access logo-icon" aria-hidden="true"></i>
+            </div>
+            <div class="brand-text">
+              <span class="brand-name">Lumos</span>
+              <span class="brand-tagline">Web Accessibility Remediation Studio</span>
+            </div>
+          </div>
+          <p class="footer-brand-text">
+            Making the open web radically accessible for everyone. Autonomous AST-level remediation, real-time speech synthesis, and WCAG 2.2 certification.
+          </p>
+          <div class="system-status-indicator">
+            <span class="pulse-dot"></span>
+            <span>All Systems WCAG 2.2 Ready</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="index.html">Product Vision</a></li>
+            <li><a href="app.html">Workspace Studio</a></li>
+            <li><a href="analytics.html">Analytics Dashboard</a></li>
+            <li><a href="docs.html">Documentation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="docs.html#architecture">Technical Architecture</a></li>
+            <li><a href="docs.html#wcag-reference">WCAG 2.2 Guidelines</a></li>
+            <li><a href="docs.html#setup">Setup &amp; Hotkeys</a></li>
+            <li><a href="docs.html#team">Team Credits</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Standards</h4>
+          <ul>
+            <li><a href="analytics.html">Perceivable (POUR)</a></li>
+            <li><a href="analytics.html">Operable (Keyboard)</a></li>
+            <li><a href="analytics.html">Understandable</a></li>
+            <li><a href="analytics.html">Robust (ARIA 1.3)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Lumos. Built for Web Accessibility &amp; Innovation. Open Access.</div>
+        <div class="footer-socials">
+          <a href="https://github.com" class="footer-social-link" title="GitHub Repository" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="docs.html" class="footer-social-link" title="Documentation" aria-label="Documentation"><i class="fa-solid fa-book"></i></a>
+          <a href="app.html" class="footer-social-link" title="Workspace" aria-label="Workspace"><i class="fa-solid fa-terminal"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>

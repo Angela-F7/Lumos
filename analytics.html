@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumos Analytics | Telemetry &amp; Compliance Metrics</title>
+  
+  <!-- SEO & Meta -->
+  <meta name="description" content="Lumos system analytics, compliance telemetry, WCAG 2.2 POUR breakdown, remediation velocity, and certified accessibility KPI metrics." />
+  <meta name="theme-color" content="#090d16" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Unified Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient Canvas Background & Glow Orbs -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="ambient-glow-orb orb-primary" aria-hidden="true"></div>
+  <div class="ambient-glow-orb orb-secondary" aria-hidden="true"></div>
+
+  <!-- Shared Top Navigation Header (Glassmorphic) -->
+  <header class="lumos-navbar" role="banner">
+    <div class="nav-container">
+      <a href="index.html" class="brand-group" aria-label="Lumos Home">
+        <div class="logo-wrapper">
+          <i class="fa-solid fa-universal-access logo-icon" aria-hidden="true"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Lumos</span>
+          <span class="brand-tagline">Accessibility Remediation Studio</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i> Vision
+        </a>
+        <a href="app.html" class="nav-link">
+          <i class="fa-solid fa-code" aria-hidden="true"></i> Workspace
+        </a>
+        <a href="analytics.html" class="nav-link active" aria-current="page">
+          <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Analytics
+        </a>
+        <a href="docs.html" class="nav-link">
+          <i class="fa-solid fa-book-open" aria-hidden="true"></i> Docs &amp; Story
+        </a>
+      </nav>
+
+      <!-- Nav Controls -->
+      <div class="nav-controls">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Switch between light and dark mode" title="Switch between Light and Dark mode">
+          <span class="theme-toggle-track">
+            <i class="fa-solid fa-moon dark-icon" aria-hidden="true"></i>
+            <i class="fa-solid fa-sun light-icon" aria-hidden="true"></i>
+          </span>
+          <span class="theme-toggle-thumb"></span>
+        </button>
+
+        <a href="app.html" class="btn-primary-action">
+          <i class="fa-solid fa-bolt-lightning" aria-hidden="true"></i>
+          <span>Launch Workspace</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Elastic Reel Alert Ticker Component (@reactbits-starter/elastic-reel-tw) -->
+  <section class="elastic-reel-container" aria-label="Real-time Accessibility Remediation Alerts">
+    <div class="elastic-reel-badge">
+      <i class="fa-solid fa-bell"></i> Live Alerts
+    </div>
+    <div class="elastic-reel-track">
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 4.1.2</span>
+        <span>Custom &lt;div&gt; button converted to semantic &lt;button type="submit"&gt;</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 1.4.3</span>
+        <span>Low contrast ratio 2.1:1 auto-calibrated to 7.4:1 AAA standard</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 1.1.1</span>
+        <span>Non-text &lt;canvas&gt; sales chart transcribed via real-time speech narration</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 2.4.7</span>
+        <span>Missing focus indicator repaired with high-contrast :focus-visible ring</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 2.4.3</span>
+        <span>Trapped modal dialog bounded with role="dialog" &amp; aria-modal="true"</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 4.1.2</span>
+        <span>Custom &lt;div&gt; button converted to semantic &lt;button type="submit"&gt;</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN ANALYTICS DASHBOARD -->
+  <main class="analytics-main" role="main">
+    
+    <!-- Analytics Header & Timeframe Selector -->
+    <section class="analytics-header" aria-labelledby="analytics-heading">
+      <div class="analytics-title">
+        <h1 id="analytics-heading">Accessibility Insights &amp; Metrics</h1>
+        <p>Live telemetry, WCAG 2.2 POUR breakdown, remediation throughput, and system health.</p>
+      </div>
+
+      <div class="timeframe-group" role="group" aria-label="Select Analytics Timeframe">
+        <button class="tf-btn" data-range="24h">24 Hours</button>
+        <button class="tf-btn active" data-range="7d">Last 7 Days</button>
+        <button class="tf-btn" data-range="30d">30 Days</button>
+        <button class="tf-btn" data-range="all">All-Time</button>
+      </div>
+    </section>
+
+    <!-- Top KPI Summary Grid -->
+    <section class="kpi-grid" aria-label="Key Performance Indicators">
+      <div class="kpi-card card-surface">
+        <div class="kpi-top">
+          <span class="kpi-title">Compliance Health Score</span>
+          <div class="kpi-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--color-success);">
+            <i class="fa-solid fa-shield-heart"></i>
+          </div>
+        </div>
+        <div class="kpi-val text-success">98.6%</div>
+        <div class="kpi-trend trend-up">
+          <i class="fa-solid fa-arrow-trend-up"></i>
+          <span>+44.2% improvement post-remediation</span>
+        </div>
+      </div>
+
+      <div class="kpi-card card-surface">
+        <div class="kpi-top">
+          <span class="kpi-title">Barriers Remediated</span>
+          <div class="kpi-icon" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-light);">
+            <i class="fa-solid fa-bolt-lightning"></i>
+          </div>
+        </div>
+        <div class="kpi-val text-accent">14,820</div>
+        <div class="kpi-trend trend-up">
+          <i class="fa-solid fa-check-double"></i>
+          <span>100% automated resolution rate</span>
+        </div>
+      </div>
+
+      <div class="kpi-card card-surface">
+        <div class="kpi-top">
+          <span class="kpi-title">AST Parse Latency</span>
+          <div class="kpi-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+            <i class="fa-solid fa-gauge-high"></i>
+          </div>
+        </div>
+        <div class="kpi-val" style="color: #38bdf8;">18.4ms</div>
+        <div class="kpi-trend trend-neutral">
+          <i class="fa-solid fa-microchip"></i>
+          <span>Client-side WebWorker compilation</span>
+        </div>
+      </div>
+
+      <div class="kpi-card card-surface">
+        <div class="kpi-top">
+          <span class="kpi-title">Speech Syntheses</span>
+          <div class="kpi-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber-light);">
+            <i class="fa-solid fa-volume-high"></i>
+          </div>
+        </div>
+        <div class="kpi-val text-warning">4,310</div>
+        <div class="kpi-trend trend-up">
+          <i class="fa-solid fa-headphones"></i>
+          <span>Neural transcripts for non-text graphics</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Analytics Charts (2x2 Grid) -->
+    <section class="charts-grid" aria-label="Visual Analytics Charts">
+      
+      <!-- Chart 1: WCAG 2.2 POUR Compliance Matrix -->
+      <div class="chart-card card-surface">
+        <div class="chart-header">
+          <h3>WCAG 2.2 POUR Pillars</h3>
+          <span class="badge-tag">Standard AA / AAA</span>
+        </div>
+        
+        <div class="pour-breakdown-list">
+          <div class="pour-row">
+            <div class="pour-label-row">
+              <span><i class="fa-solid fa-eye text-accent"></i> 1. Perceivable (Contrast, Alt, Media)</span>
+              <span class="text-accent">98% / 100</span>
+            </div>
+            <div class="pour-bar-bg">
+              <div class="pour-bar-fill" style="width: 98%; background: var(--accent-glow);"></div>
+            </div>
+          </div>
+
+          <div class="pour-row">
+            <div class="pour-label-row">
+              <span><i class="fa-solid fa-keyboard text-warning"></i> 2. Operable (Keyboard &amp; Focus Trap)</span>
+              <span class="text-warning">100% / 100</span>
+            </div>
+            <div class="pour-bar-bg">
+              <div class="pour-bar-fill" style="width: 100%; background: var(--accent-amber-light);"></div>
+            </div>
+          </div>
+
+          <div class="pour-row">
+            <div class="pour-label-row">
+              <span><i class="fa-solid fa-brain" style="color: #38bdf8;"></i> 3. Understandable (Labels &amp; Errors)</span>
+              <span style="color: #38bdf8;">96% / 100</span>
+            </div>
+            <div class="pour-bar-bg">
+              <div class="pour-bar-fill" style="width: 96%; background: #38bdf8;"></div>
+            </div>
+          </div>
+
+          <div class="pour-row">
+            <div class="pour-label-row">
+              <span><i class="fa-solid fa-shield-halved text-success"></i> 4. Robust (ARIA &amp; Semantics)</span>
+              <span class="text-success">99% / 100</span>
+            </div>
+            <div class="pour-bar-bg">
+              <div class="pour-bar-fill" style="width: 99%; background: var(--color-success);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart 2: Barrier Category Distribution -->
+      <div class="chart-card card-surface">
+        <div class="chart-header">
+          <h3>Barrier Category Distribution</h3>
+          <span class="badge-tag">AST Detected</span>
+        </div>
+
+        <div class="category-bars">
+          <div class="cat-item">
+            <span class="cat-name">Missing ARIA Roles</span>
+            <div class="cat-bar-wrap">
+              <div class="cat-bar" style="width: 34%; background: var(--accent-glow);"></div>
+            </div>
+            <span class="cat-pct text-accent">34%</span>
+          </div>
+
+          <div class="cat-item">
+            <span class="cat-name">Low Contrast Ratio</span>
+            <div class="cat-bar-wrap">
+              <div class="cat-bar" style="width: 28%; background: var(--accent-amber-light);"></div>
+            </div>
+            <span class="cat-pct text-warning">28%</span>
+          </div>
+
+          <div class="cat-item">
+            <span class="cat-name">Non-Text Content / Alt</span>
+            <div class="cat-bar-wrap">
+              <div class="cat-bar" style="width: 22%; background: #38bdf8;"></div>
+            </div>
+            <span class="cat-pct" style="color: #38bdf8;">22%</span>
+          </div>
+
+          <div class="cat-item">
+            <span class="cat-name">Keyboard Focus Traps</span>
+            <div class="cat-bar-wrap">
+              <div class="cat-bar" style="width: 16%; background: var(--color-success);"></div>
+            </div>
+            <span class="cat-pct text-success">16%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart 3: Weekly Throughput Timeline -->
+      <div class="chart-card card-surface">
+        <div class="chart-header">
+          <h3>Remediation Velocity Timeline</h3>
+          <span class="badge-tag">Scans Completed / Day</span>
+        </div>
+
+        <div class="velocity-timeline" aria-label="Weekly Activity Bar Graph">
+          <div class="timeline-bar-col">
+            <div class="timeline-bar" style="height: 60%;" title="Mon: 1,820 scans"></div>
+            <span class="timeline-day">Mon</span>
+          </div>
+          <div class="timeline-bar-col">
+            <div class="timeline-bar" style="height: 75%;" title="Tue: 2,340 scans"></div>
+            <span class="timeline-day">Tue</span>
+          </div>
+          <div class="timeline-bar-col">
+            <div class="timeline-bar" style="height: 90%;" title="Wed: 3,120 scans"></div>
+            <span class="timeline-day">Wed</span>
+          </div>
+          <div class="timeline-bar-col">
+            <div class="timeline-bar" style="height: 65%;" title="Thu: 2,150 scans"></div>
+            <span class="timeline-day">Thu</span>
+          </div>
+          <div class="timeline-bar-col">
+            <div class="timeline-bar" style="height: 85%;" title="Fri: 2,900 scans"></div>
+            <span class="timeline-day">Fri</span>
+          </div>
+          <div class="timeline-bar-col">
+            <div class="timeline-bar" style="height: 45%;" title="Sat: 1,200 scans"></div>
+            <span class="timeline-day">Sat</span>
+          </div>
+          <div class="timeline-bar-col">
+            <div class="timeline-bar" style="height: 55%;" title="Sun: 1,290 scans"></div>
+            <span class="timeline-day">Sun</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart 4: Severity & Resolution Distribution -->
+      <div class="chart-card card-surface">
+        <div class="chart-header">
+          <h3>Barrier Severity Resolution</h3>
+          <span class="badge-tag">Auto-Fixed</span>
+        </div>
+
+        <div class="pour-breakdown-list">
+          <div class="pour-row">
+            <div class="pour-label-row">
+              <span><i class="fa-solid fa-circle-exclamation text-error"></i> Critical Barriers (Keyboard Trap, Form Blockers)</span>
+              <span class="text-success">0 Remaining (100% Fixed)</span>
+            </div>
+            <div class="pour-bar-bg">
+              <div class="pour-bar-fill" style="width: 100%; background: var(--color-success);"></div>
+            </div>
+          </div>
+
+          <div class="pour-row">
+            <div class="pour-label-row">
+              <span><i class="fa-solid fa-triangle-exclamation text-warning"></i> Serious Barriers (Contrast &lt; 4.5:1, Alt Text)</span>
+              <span class="text-success">0 Remaining (100% Fixed)</span>
+            </div>
+            <div class="pour-bar-bg">
+              <div class="pour-bar-fill" style="width: 100%; background: var(--color-success);"></div>
+            </div>
+          </div>
+
+          <div class="pour-row">
+            <div class="pour-label-row">
+              <span><i class="fa-solid fa-circle-info text-accent"></i> Moderate / Advisory (Landmarks, Titles)</span>
+              <span class="text-success">0 Remaining (100% Fixed)</span>
+            </div>
+            <div class="pour-bar-bg">
+              <div class="pour-bar-fill" style="width: 100%; background: var(--color-success);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Recent Audit Activity Log Table -->
+    <section class="audit-table-card card-surface" aria-labelledby="activity-heading">
+      <div class="chart-header">
+        <h3 id="activity-heading">Recent Component Audit &amp; Remediation Logs</h3>
+        <button class="btn-secondary" id="btn-export-csv" title="Download CSV Report">
+          <i class="fa-solid fa-file-csv"></i> Export CSV
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>Target Component / Scenario</th>
+              <th>WCAG Criteria</th>
+              <th>Identified Barriers</th>
+              <th>Initial Score</th>
+              <th>Remediated Score</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Checkout Form</strong> (checkout.jsx)</td>
+              <td>4.1.2, 1.1.1, 1.3.1, 2.4.7</td>
+              <td>4 Violations</td>
+              <td><span class="text-error">42%</span></td>
+              <td><span class="text-success font-bold">98%</span></td>
+              <td><span class="v-status-badge status-pass">Certified AAA</span></td>
+              <td><a href="app.html" class="btn-icon" title="Open in Workspace"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+            </tr>
+            <tr>
+              <td><strong>Dynamic Sales Chart</strong> (sales-canvas.jsx)</td>
+              <td>1.1.1, 1.4.3</td>
+              <td>2 Violations</td>
+              <td><span class="text-error">38%</span></td>
+              <td><span class="text-success font-bold">96%</span></td>
+              <td><span class="v-status-badge status-pass">Synthesized</span></td>
+              <td><a href="app.html" class="btn-icon" title="Open in Workspace"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+            </tr>
+            <tr>
+              <td><strong>Modal Dialog Window</strong> (newsletter.html)</td>
+              <td>2.4.3, 4.1.2</td>
+              <td>2 Violations</td>
+              <td><span class="text-error">48%</span></td>
+              <td><span class="text-success font-bold">100%</span></td>
+              <td><span class="v-status-badge status-pass">Trapped</span></td>
+              <td><a href="app.html" class="btn-icon" title="Open in Workspace"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+            </tr>
+            <tr>
+              <td><strong>Marketing Hero Navigation</strong> (header.jsx)</td>
+              <td>2.1.1, 1.4.3</td>
+              <td>3 Violations</td>
+              <td><span class="text-warning">56%</span></td>
+              <td><span class="text-success font-bold">97%</span></td>
+              <td><span class="v-status-badge status-pass">Certified AA</span></td>
+              <td><a href="app.html" class="btn-icon" title="Open in Workspace"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+            </tr>
+            <tr>
+              <td><strong>Customer Support Table</strong> (orders-grid.html)</td>
+              <td>1.3.1, 4.1.2</td>
+              <td>2 Violations</td>
+              <td><span class="text-error">45%</span></td>
+              <td><span class="text-success font-bold">95%</span></td>
+              <td><span class="v-status-badge status-pass">Remediated</span></td>
+              <td><a href="app.html" class="btn-icon" title="Open in Workspace"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Shared Unified Footer -->
+  <footer class="lumos-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <div class="brand-group">
+            <div class="logo-wrapper">
+              <i class="fa-solid fa-universal-access logo-icon" aria-hidden="true"></i>
+            </div>
+            <div class="brand-text">
+              <span class="brand-name">Lumos</span>
+              <span class="brand-tagline">Web Accessibility Remediation Studio</span>
+            </div>
+          </div>
+          <p class="footer-brand-text">
+            Making the open web radically accessible for everyone. Autonomous AST-level remediation, real-time speech synthesis, and WCAG 2.2 certification.
+          </p>
+          <div class="system-status-indicator">
+            <span class="pulse-dot"></span>
+            <span>All Systems WCAG 2.2 Ready</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="index.html">Product Vision</a></li>
+            <li><a href="app.html">Workspace Studio</a></li>
+            <li><a href="analytics.html">Analytics Dashboard</a></li>
+            <li><a href="docs.html">Documentation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="docs.html#architecture">Technical Architecture</a></li>
+            <li><a href="docs.html#wcag-reference">WCAG 2.2 Guidelines</a></li>
+            <li><a href="docs.html#setup">Setup &amp; Hotkeys</a></li>
+            <li><a href="docs.html#team">Team Credits</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Standards</h4>
+          <ul>
+            <li><a href="analytics.html">Perceivable (POUR)</a></li>
+            <li><a href="analytics.html">Operable (Keyboard)</a></li>
+            <li><a href="analytics.html">Understandable</a></li>
+            <li><a href="analytics.html">Robust (ARIA 1.3)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Lumos. Built for Web Accessibility &amp; Innovation. Open Access.</div>
+        <div class="footer-socials">
+          <a href="https://github.com" class="footer-social-link" title="GitHub Repository" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="docs.html" class="footer-social-link" title="Documentation" aria-label="Documentation"><i class="fa-solid fa-book"></i></a>
+          <a href="app.html" class="footer-social-link" title="Workspace" aria-label="Workspace"><i class="fa-solid fa-terminal"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>

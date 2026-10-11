@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumos Docs | Technical Architecture &amp; Hackathon Story</title>
+  
+  <!-- SEO & Meta -->
+  <meta name="description" content="Technical documentation, AST remediation architecture, hackathon story, WCAG 2.2 criteria reference, developer setup guide, and team credits." />
+  <meta name="theme-color" content="#090d16" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Unified Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient Canvas Background & Glow Orbs -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="ambient-glow-orb orb-primary" aria-hidden="true"></div>
+  <div class="ambient-glow-orb orb-secondary" aria-hidden="true"></div>
+
+  <!-- Shared Top Navigation Header (Glassmorphic) -->
+  <header class="lumos-navbar" role="banner">
+    <div class="nav-container">
+      <a href="index.html" class="brand-group" aria-label="Lumos Home">
+        <div class="logo-wrapper">
+          <i class="fa-solid fa-universal-access logo-icon" aria-hidden="true"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Lumos</span>
+          <span class="brand-tagline">Accessibility Remediation Studio</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">
+          <i class="fa-solid fa-compass" aria-hidden="true"></i> Vision
+        </a>
+        <a href="app.html" class="nav-link">
+          <i class="fa-solid fa-code" aria-hidden="true"></i> Workspace
+        </a>
+        <a href="analytics.html" class="nav-link">
+          <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Analytics
+        </a>
+        <a href="docs.html" class="nav-link active" aria-current="page">
+          <i class="fa-solid fa-book-open" aria-hidden="true"></i> Docs &amp; Story
+        </a>
+      </nav>
+
+      <!-- Nav Controls -->
+      <div class="nav-controls">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Switch between light and dark mode" title="Switch between Light and Dark mode">
+          <span class="theme-toggle-track">
+            <i class="fa-solid fa-moon dark-icon" aria-hidden="true"></i>
+            <i class="fa-solid fa-sun light-icon" aria-hidden="true"></i>
+          </span>
+          <span class="theme-toggle-thumb"></span>
+        </button>
+
+        <a href="app.html" class="btn-primary-action">
+          <i class="fa-solid fa-bolt-lightning" aria-hidden="true"></i>
+          <span>Launch Workspace</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Elastic Reel Alert Ticker Component (@reactbits-starter/elastic-reel-tw) -->
+  <section class="elastic-reel-container" aria-label="Real-time Accessibility Remediation Alerts">
+    <div class="elastic-reel-badge">
+      <i class="fa-solid fa-bell"></i> Live Alerts
+    </div>
+    <div class="elastic-reel-track">
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 4.1.2</span>
+        <span>Custom &lt;div&gt; button converted to semantic &lt;button type="submit"&gt;</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 1.4.3</span>
+        <span>Low contrast ratio 2.1:1 auto-calibrated to 7.4:1 AAA standard</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 1.1.1</span>
+        <span>Non-text &lt;canvas&gt; sales chart transcribed via real-time speech narration</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 2.4.7</span>
+        <span>Missing focus indicator repaired with high-contrast :focus-visible ring</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 2.4.3</span>
+        <span>Trapped modal dialog bounded with role="dialog" &amp; aria-modal="true"</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+      <div class="elastic-reel-item">
+        <span class="reel-tag">WCAG 4.1.2</span>
+        <span>Custom &lt;div&gt; button converted to semantic &lt;button type="submit"&gt;</span>
+        <i class="fa-solid fa-circle-check reel-arrow"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN DOCUMENTATION & STORY LAYOUT -->
+  <main class="docs-layout" role="main">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar" aria-label="Documentation Table of Contents">
+      <span class="sidebar-heading">Navigation</span>
+      <ul class="sidebar-menu">
+        <li><a href="#overview" class="sidebar-link active"><i class="fa-solid fa-flag"></i> Project Overview</a></li>
+        <li><a href="#story" class="sidebar-link"><i class="fa-solid fa-feather"></i> Hackathon Story</a></li>
+        <li><a href="#architecture" class="sidebar-link"><i class="fa-solid fa-diagram-project"></i> Technical Architecture</a></li>
+        <li><a href="#wcag-reference" class="sidebar-link"><i class="fa-solid fa-scale-balanced"></i> WCAG 2.2 Standards</a></li>
+        <li><a href="#audio-synth" class="sidebar-link"><i class="fa-solid fa-waveform-lines"></i> Audio Synthesis Engine</a></li>
+        <li><a href="#setup" class="sidebar-link"><i class="fa-solid fa-terminal"></i> Setup &amp; Hotkeys</a></li>
+        <li><a href="#team" class="sidebar-link"><i class="fa-solid fa-users"></i> Team Credits</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <article class="docs-content">
+      
+      <!-- Section 1: Overview -->
+      <section id="overview" class="doc-section">
+        <h1>Documentation &amp; Engineering Story</h1>
+        <p>
+          Lumos is a next-generation web accessibility remediation studio. Designed from the ground up for frontend engineers, UX architects, and accessibility auditors, it converts inaccessible DOM trees into certified WCAG 2.2 AA and AAA compliant components in real time.
+        </p>
+
+        <div class="doc-box">
+          <h3>Core Tenets of Lumos</h3>
+          <ul style="margin-left: 1.5rem; margin-top: 0.75rem; color: var(--text-secondary); line-height: 1.8;">
+            <li><strong>Action over Criticism:</strong> Traditional linters output hundreds of warnings that overwhelm developers. Lumos automatically rewrites code and injects fixes.</li>
+            <li><strong>Mathematical Rigor:</strong> Color contrast is calibrated using exact APCA and WCAG 2.2 relative luminance formulas.</li>
+            <li><strong>Multimodal Inclusivity:</strong> Visual graphs and unlabelled canvases are synthesized into auditory speech descriptions with live waveforms.</li>
+            <li><strong>100% Client-Side Privacy:</strong> AST parsing and Web Audio speech synthesis run entirely in your local browser sandbox.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 2: Hackathon Story -->
+      <section id="story" class="doc-section">
+        <h2>The Hackathon Story: Why Lumos Was Born</h2>
+        <p>
+          According to the latest WebAIM Million report, <strong>96.3% of the top 1,000,000 websites</strong> have detectable WCAG accessibility failures on their homepages. Over 1.3 billion people worldwide experience significant disabilities, yet modern single-page applications frequently use generic <code>&lt;div&gt;</code> buttons, unlabelled forms, trapped modals, and low contrast color palettes.
+        </p>
+        <p>
+          During the hackathon, our team realized that the problem isn't a lack of guidelines; it's a lack of autonomous tooling. Frontend developers are burdened with complex delivery timelines and rarely have time to manually look up every ARIA specification. Lumos was created to serve as an <em>autonomous co-pilot</em>: you paste your component or inspect a URL, and Lumos mathematically reconstructs accessible markup with one click.
+        </p>
+      </section>
+
+      <!-- Section 3: Technical Architecture -->
+      <section id="architecture" class="doc-section">
+        <h2>Technical Architecture &amp; AST Pipeline</h2>
+        <p>
+          Lumos operates a four-stage client-side compiler pipeline that inspects, translates, and synthesizes code:
+        </p>
+
+        <!-- Architecture Flow Nodes -->
+        <div class="arch-diagram-grid">
+          <div class="arch-node">
+            <div class="arch-node-icon"><i class="fa-solid fa-code"></i></div>
+            <h4>1. Ingestion</h4>
+            <p>Raw JSX / HTML or live URL DOM parsed into an AST tree representation.</p>
+          </div>
+
+          <div class="arch-node">
+            <div class="arch-node-icon"><i class="fa-solid fa-microchip"></i></div>
+            <h4>2. AST Rules Engine</h4>
+            <p>Maps every node against 80+ WCAG 2.2 AA/AAA rules &amp; ARIA landmark specs.</p>
+          </div>
+
+          <div class="arch-node">
+            <div class="arch-node-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <h4>3. Transformer</h4>
+            <p>Rewrites nodes, injects ARIA roles, labels, focus traps, and recalculates luminance.</p>
+          </div>
+
+          <div class="arch-node">
+            <div class="arch-node-icon"><i class="fa-solid fa-certificate"></i></div>
+            <h4>4. Multimodal Output</h4>
+            <p>Emits diff code, synthesizes audio narration, and renders audit report.</p>
+          </div>
+        </div>
+
+        <div class="code-block-card">
+          <div class="code-block-header">
+            <span>lumos-ast-transformer.js</span>
+            <span>JavaScript AST Engine</span>
+          </div>
+          <pre class="code-block-body"><code>// Example: Automated DIV to Semantic Button Transformation Rule
+function transformDivButtonToSemantic(node) {
+  if (node.tagName === 'DIV' && node.hasAttribute('onclick')) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = node.className;
+    button.innerHTML = node.innerHTML;
+    
+    // Injected ARIA and keyboard listener
+    button.setAttribute('role', 'button');
+    button.setAttribute('tabindex', '0');
+    button.setAttribute('aria-label', extractAccessibleName(node));
+    return button;
+  }
+  return node;
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- Section 4: WCAG 2.2 Standards Reference -->
+      <section id="wcag-reference" class="doc-section">
+        <h2>WCAG 2.2 Standards Reference</h2>
+        <p>
+          Lumos validates all components against the four core principles of the Web Content Accessibility Guidelines (POUR):
+        </p>
+
+        <div class="doc-box">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>WCAG Criterion</th>
+                <th>Level</th>
+                <th>Rule Description</th>
+                <th>Lumos Remediation Strategy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>4.1.2 Name, Role, Value</strong></td>
+                <td>Level A</td>
+                <td>Interactive elements must provide accessible names and semantic roles.</td>
+                <td>Converts non-semantic <code>&lt;div&gt;</code> to <code>&lt;button&gt;</code> with <code>aria-label</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>1.4.3 Contrast (Minimum)</strong></td>
+                <td>Level AA</td>
+                <td>Text contrast ratio must exceed 4.5:1 for regular text and 3:1 for large text.</td>
+                <td>Automatically boosts foreground colors to exceed 7:1 AAA standard.</td>
+              </tr>
+              <tr>
+                <td><strong>1.1.1 Non-Text Content</strong></td>
+                <td>Level A</td>
+                <td>All non-text content (images, canvas) must have text alternatives.</td>
+                <td>Injects descriptive <code>alt</code> text and synthesizes speech narration.</td>
+              </tr>
+              <tr>
+                <td><strong>2.4.7 Focus Visible</strong></td>
+                <td>Level AA</td>
+                <td>Keyboard focus indicators must be clearly visible on all interactive targets.</td>
+                <td>Applies calibrated <code>:focus-visible</code> high-contrast outline rings.</td>
+              </tr>
+              <tr>
+                <td><strong>2.4.3 Focus Order</strong></td>
+                <td>Level A</td>
+                <td>Components must receive focus in a logical, non-trapped order.</td>
+                <td>Injects modal dialog boundaries with <code>role="dialog"</code> and escape handlers.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 5: Audio Synthesis Engine -->
+      <section id="audio-synth" class="doc-section">
+        <h2>Audio Description Synthesizer Engine</h2>
+        <p>
+          For visual assets like <code>&lt;canvas&gt;</code> sales graphs, SVG heatmaps, and complex infographics, alternative text alone is often insufficient. Lumos features an integrated <strong>Speech &amp; Waveform Synthesizer</strong>:
+        </p>
+        <ul style="margin-left: 1.5rem; color: var(--text-secondary); line-height: 1.8;">
+          <li><strong>SpeechSynthesisUtterance Integration:</strong> Converts structured data points into natural human audio narration.</li>
+          <li><strong>Real-Time Canvas Waveform:</strong> Renders interactive audio frequencies via HTML5 Canvas visualizer.</li>
+          <li><strong>Screen Reader Rotor Compatibility:</strong> Prepares accessible transcripts for Braille displays and rotor navigation.</li>
+        </ul>
+      </section>
+
+      <!-- Section 6: Setup & Hotkeys -->
+      <section id="setup" class="doc-section">
+        <h2>Developer Setup &amp; Hotkeys</h2>
+        <p>
+          Lumos is designed to fit directly into your daily frontend workflow without complex build steps:
+        </p>
+
+        <div class="code-block-card">
+          <div class="code-block-header">
+            <span>Terminal</span>
+            <span>Quickstart</span>
+          </div>
+          <pre class="code-block-body"><code># Clone repository
+git clone https://github.com/lumos/accessibility-studio.git
+cd lumos
+
+# Open in any local browser (Zero build steps, pure ESM)
+# Or serve with any static web server:
+npx serve .</code></pre>
+        </div>
+
+        <div class="doc-box">
+          <h3>Keyboard Shortcuts Cheat Sheet</h3>
+          <div style="display: grid; grid-template-columns: 180px 1fr; gap: 0.75rem; margin-top: 1rem; font-size: 0.85rem;">
+            <div><span class="hotkey-pill">Ctrl + Shift + L</span></div>
+            <div>Run Master Auto-Fix on the currently loaded component scenario</div>
+
+            <div><span class="hotkey-pill">Tab / Shift + Tab</span></div>
+            <div>Traverse interactive buttons, tabs, and form elements in logical focus order</div>
+
+            <div><span class="hotkey-pill">Click Owo Mascot</span></div>
+            <div>Trigger contextual accessibility guidance tips and mascot animations</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Team Credits -->
+      <section id="team" class="doc-section">
+        <h2>Team Credits &amp; Attribution</h2>
+        <p>
+          Lumos was created for the Web Accessibility &amp; Innovation Hackathon by an impassioned team of frontend and accessibility engineers:
+        </p>
+
+        <div class="team-grid">
+          <div class="team-card card-surface">
+            <div class="team-avatar">LF</div>
+            <div>
+              <h3>Lead Frontend Engineer</h3>
+              <span class="team-role">Architecture &amp; UX System</span>
+            </div>
+            <p>Designed the modular multi-page system, glassmorphic design tokens, and interactive split diff inspector.</p>
+          </div>
+
+          <div class="team-card card-surface">
+            <div class="team-avatar">WC</div>
+            <div>
+              <h3>WCAG Standards Lead</h3>
+              <span class="team-role">Accessibility Auditor</span>
+            </div>
+            <p>Engineered rule verification mappings for WCAG 2.2 POUR standards, AAA contrast, and ARIA 1.3 models.</p>
+          </div>
+
+          <div class="team-card card-surface">
+            <div class="team-avatar">AS</div>
+            <div>
+              <h3>AST &amp; Compiler Engineer</h3>
+              <span class="team-role">DOM Rewriter Systems</span>
+            </div>
+            <p>Built client-side AST inspection, semantic element generation, and focus-trapping scripts.</p>
+          </div>
+
+          <div class="team-card card-surface">
+            <div class="team-avatar">CD</div>
+            <div>
+              <h3>Creative Director</h3>
+              <span class="team-role">Audio &amp; Mascot Design</span>
+            </div>
+            <p>Designed Owo the Owl mascot SVG, Web Audio API sound synthesis, and real-time waveform canvas engine.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- Shared Unified Footer -->
+  <footer class="lumos-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <div class="brand-group">
+            <div class="logo-wrapper">
+              <i class="fa-solid fa-universal-access logo-icon" aria-hidden="true"></i>
+            </div>
+            <div class="brand-text">
+              <span class="brand-name">Lumos</span>
+              <span class="brand-tagline">Web Accessibility Remediation Studio</span>
+            </div>
+          </div>
+          <p class="footer-brand-text">
+            Making the open web radically accessible for everyone. Autonomous AST-level remediation, real-time speech synthesis, and WCAG 2.2 certification.
+          </p>
+          <div class="system-status-indicator">
+            <span class="pulse-dot"></span>
+            <span>All Systems WCAG 2.2 Ready</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="index.html">Product Vision</a></li>
+            <li><a href="app.html">Workspace Studio</a></li>
+            <li><a href="analytics.html">Analytics Dashboard</a></li>
+            <li><a href="docs.html">Documentation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="docs.html#architecture">Technical Architecture</a></li>
+            <li><a href="docs.html#wcag-reference">WCAG 2.2 Guidelines</a></li>
+            <li><a href="docs.html#setup">Setup &amp; Hotkeys</a></li>
+            <li><a href="docs.html#team">Team Credits</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Standards</h4>
+          <ul>
+            <li><a href="analytics.html">Perceivable (POUR)</a></li>
+            <li><a href="analytics.html">Operable (Keyboard)</a></li>
+            <li><a href="analytics.html">Understandable</a></li>
+            <li><a href="analytics.html">Robust (ARIA 1.3)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Lumos. Built for Web Accessibility &amp; Innovation. Open Access.</div>
+        <div class="footer-socials">
+          <a href="https://github.com" class="footer-social-link" title="GitHub Repository" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="docs.html" class="footer-social-link" title="Documentation" aria-label="Documentation"><i class="fa-solid fa-book"></i></a>
+          <a href="app.html" class="footer-social-link" title="Workspace" aria-label="Workspace"><i class="fa-solid fa-terminal"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
